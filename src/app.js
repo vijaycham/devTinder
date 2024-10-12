@@ -2,30 +2,31 @@ const express = require("express");
 
 const app = express();
 
-app.get("/user/:userID/:name/:password" , (req, res) => {
-  console.log(req.params);
-  res.send({ firstname: "Vijay", lastName: "Sivakadatcham" });
-});
-
-
-app.post("/user", (req, res) => {
-  //saving data base
-  res.send("Data saved in the databaase succesfully!");
-});
-
-app.delete("/user", (req, res) => {
-  res.send("Deleted the data");
-});
-
-// app.use("/user", (req, res) => {
-//   res.send("Hahaha");
-// });
-
-//this will match all the HTTP method API calls to /test
-app.use("/test", (req, res) => {
-  res.send("Testing...");
-});
+//app.use("/route", rH, [rH2, rH3], rH4,rh5)
+app.use(
+  "/", [
+  (req, res, next) => {
+    console.log("Handling the route user 1");
+    //res.send("1st Response");
+    next();
+  },
+  (req, res,next) => {
+    console.log("Handling the route user 2");
+   // res.send("2nd Response");
+    next();
+  },
+  (req, res, next) => {
+    console.log("Handling the route user 3");
+   // res.send("3rd Response");
+    next();
+  },
+  (req, res, next) => {
+    console.log("Handling the route user 4");
+    //res.send("4th Response");
+    // next();
+  }
+]);
 
 app.listen(7777, () => {
-  console.log("server is listening oon port 7777... ");
+  console.log("server is listening on port 7777... ");
 });
