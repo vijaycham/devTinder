@@ -2,30 +2,25 @@ const express = require("express");
 
 const app = express();
 
-//app.use("/route", rH, [rH2, rH3], rH4,rh5)
+// GET/users => it will go through the chain of middleware and then it will handle the response
+
+//GET/users => middlwares chan => rquest handler
+
+
+app.use("/user", (req,res, next) =>{
+  console.log('2nd route handler');
+  //res.send("2nd response")
+  next();
+})
 app.use(
-  "/", [
+  "/user", 
   (req, res, next) => {
     console.log("Handling the route user 1");
     //res.send("1st Response");
-    next();
+    //next();
   },
-  (req, res,next) => {
-    console.log("Handling the route user 2");
-   // res.send("2nd Response");
-    next();
-  },
-  (req, res, next) => {
-    console.log("Handling the route user 3");
-   // res.send("3rd Response");
-    next();
-  },
-  (req, res, next) => {
-    console.log("Handling the route user 4");
-    //res.send("4th Response");
-    // next();
-  }
-]);
+); 
+
 
 app.listen(7777, () => {
   console.log("server is listening on port 7777... ");
