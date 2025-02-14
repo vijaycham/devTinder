@@ -2,7 +2,6 @@ const express = require("express");
 const connectDB = require("./config/database");
 const app = express();
 const User = require("./models/user");
-const user = require("./models/user");
 
 app.use(express.json());
 
@@ -51,32 +50,54 @@ app.get("/feed", async (req, res) => {
   }
 });
 // detele a user from the database
-app.delete("/user", async (req, res) => {
-  const userId = req.body.userId;
-  try {
-    //const deletUser = await User.findByIdandDelete(_id: userId)
-    const deleteUser = await User.findByIdAndDelete(userId);
-    if (!deleteUser) {
-      return res.status(404).send("User not found");
-    } else {
-      res.send(" user deleted successfully");
-    }
-  } catch (error) {
-    res.status(400).send("something went wrong");
-  }
-});
+// app.delete("/user", async (req, res) => {
+//   const userId = req.body.userId;
+//   try {
+//     //const deletUser = await User.findByIdandDelete(_id: userId)
+//     const deleteUser = await User.findByIdAndDelete(userId);
+//     if (!deleteUser) {
+//       return res.status(404).send("User not foundd");
+//     } else {
+//       res.send(" user deleted successfully");
+//     }
+//   } catch (error) {
+//     res.status(400).send("something went wrong");
+//   }
+// });
 // update data of the user
 app.patch("/user", async (req, res) => {
-  const userId = req.body.userId;
-  const data = req.body;
+  const { userId, ...data } = req.body;
   try {
-    await User.findByIdAndUpdate({ _id: userId }, data);
-    res.send("User updated successfully");
+    // await User.findByIdAndUpdate({ _id: userId}, data);
+    const updatedUser = await User.findByIdAndUpdate(userId, data, {
+      new: true,
+      runValidator: true,
+    });
+
+    res.send({ message: "User updated successfully", updatedUser });
   } catch (err) {
     res.status(400).send("something went wrong");
   }
 });
-
+// detele a user from the database
+app.delete("/user", async (req, res) => {
+  const emailId = req.body.emailId;
+  console.log(req.body.emailId);
+  console.log(emailId);
+  if (!emailId) {
+    return res.status(400).send("Email ID is required");
+  }
+  try {
+    const deleteUser = await User.findOneAndDelete({ emailId });
+    if (!deleteUser) {
+      return res.status(404).send({ message: "User not foundd" });
+    }
+    res.send("User deleted successfully");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Something went wrong");
+  }
+});
 connectDB()
   .then(() => {
     console.log("Database connection established succesfully!");

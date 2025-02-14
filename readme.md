@@ -1,1 +1,2 @@
-- created schema and usermodel
+- Explored the Mongoose Documentation for model methods
+- what are options in a Model.findOneAndUpdate method, explored
