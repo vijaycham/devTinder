@@ -14,8 +14,9 @@
   "author": "\"VIJAY\"",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^16.4.7",
+    "dotenv": "^16.6.1",
     "express": "^4.21.0",
-    "mongoose": "^8.9.6"
+    "mongoose": "^8.9.6",
+    "nodemon": "^3.1.11"
   }
 }
